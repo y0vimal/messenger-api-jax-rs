@@ -15,6 +15,7 @@
    		<property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
    		
    		
+   		
    		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
    		<property name="hbm2ddl.auto">create</property> <!-- create / create-drop / update -->
 		
