@@ -1,28 +1,26 @@
 package org.vimal.development.messenger_rest_api.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
-public class Message {
+@Entity
+public class Message{
 	
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
 	private Long id;
+	
 	private String author;
-	private Date created;
+	
+	public Message() {
+		super();
+	}
+
+	private String created;
 	private String content;
 	
-	public Message() {}
-	
-	
-	public Message(Long id, String author, String content) {
-		super();
-		this.id = id;
-		this.author = author;
-		this.content = content;
-		this.created = new Date();
-	}
 	public Long getId() {
 		return id;
 	}
@@ -35,10 +33,11 @@ public class Message {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public Date getCreated() {
+	
+	public String getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	public void setCreated(String created) {
 		this.created = created;
 	}
 	public String getContent() {
