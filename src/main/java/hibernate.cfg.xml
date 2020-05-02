@@ -13,8 +13,7 @@
 	
    		<property name="connection.url">jdbc:postgresql://localhost:6984/hibernatedb</property> <!-- BD Mane -->
    		<property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
-   		<property name="connection.username">postgres</property> <!-- DB User -->
-   		<property name="connection.password">vimal123</property> <!-- DB Password -->
+   		
    		
    		<property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
    		<property name="hbm2ddl.auto">create</property> <!-- create / create-drop / update -->
