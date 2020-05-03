@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -78,5 +79,11 @@ public class MessageResource {
 	public Message updateMessage(Message message, @PathParam ("messageId") long id) {
 		message.setId(id);
 		return messageService.updateMessage(message);
+	}
+	
+	@DELETE
+	@Path ("/{messageId}")
+	public void deleteMessage(@PathParam ("messageId") Long messageId) {
+		messageService.deleteMessage(messageId);
 	}
 }

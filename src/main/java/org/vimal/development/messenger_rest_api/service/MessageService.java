@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.vimal.development.messenger_rest_api.model.Message;
+import org.vimal.development.messenger_rest_api.model.Profile;
 
 
 public class MessageService {
@@ -95,6 +96,22 @@ public class MessageService {
 		session.close();
 		return message;
 		
+		
+	}
+
+	public void deleteMessage(Long messageId) {
+		session = DatabaseService.getSession();
+		session.beginTransaction();
+		
+		Message message = session.get(Message.class, messageId);
+		if(message == null) {
+			LOGGER.info("message to be delted, does not exist");
+			return;
+		}
+		session.delete(message);
+		
+		session.getTransaction().commit();
+		session.close();
 		
 	}
 
