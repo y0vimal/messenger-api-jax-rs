@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -29,8 +30,11 @@ public class MessageResource {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getMessages(){
-		return messageService.getAllMessages();
+	public List<Message> getMessages(@QueryParam ("year") int year,
+									 @QueryParam ("start") int start,
+									 @QueryParam ("end") int end){
+		
+		return messageService.getAllMessages(year, start, end);
 	}
 	
 	@POST

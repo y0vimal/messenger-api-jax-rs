@@ -1,8 +1,11 @@
 package org.vimal.development.messenger_rest_api.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,7 +20,7 @@ public class MessageService {
 	
 	private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MessageService.class);
 	
-	public List<Message> getAllMessages(){
+	public List<Message> getAllMessages(int year, int start, int end){
 		
 		// return all the messages present in database
 		List<Message> messageList = new ArrayList();
@@ -29,12 +32,25 @@ public class MessageService {
 		
 		Query query = session.createQuery("from Message");
 		messageList = query.list();
+		
 		LOGGER.info("------------- logging the message list ----------");
 		
-		messageList.stream()
-				   .forEach(message -> LOGGER.info("message {} : {}", message.getId(), message));
+		return messageList.stream()
+				   .filter(message -> {
+					   if(year <= 0) {
+						   return true;
+					   }else {
+						  
+						   DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+						   LocalDate localDate = LocalDate.parse(message.getCreated(), dateTimeFormatter);
+						   
+						   return year == localDate.getYear();
+					   }
+				   })
+				   .collect(Collectors.toList())
+				   .subList(start, end);
 		
-		return messageList;
+		
 		
 		}catch(Exception e) {
 			LOGGER.warn("exception caught: {} " , e.toString());
@@ -90,7 +106,10 @@ public class MessageService {
 		
 		session = DatabaseService.getSession();
 		session.beginTransaction();
-
+		Message msg = session.get(Message.class, message.getId());
+		if(msg == null) {
+			return null;
+		}
 		session.update(message);
 		session.getTransaction().commit();
 		session.close();
