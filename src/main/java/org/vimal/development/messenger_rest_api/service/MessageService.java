@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;
-import org.vimal.development.messenger_rest_api.hibernate.service.DatabaseService;
 import org.vimal.development.messenger_rest_api.model.Message;
 
 
@@ -22,7 +22,17 @@ public class MessageService {
 		List<Message> messageList = new ArrayList();
 		try {
 		session = DatabaseService.getSession();
-		messageList =  Arrays.asList((Message) session.get(Message.class, 1L));
+		
+//		messageList =  Arrays.asList((Message) session.get(Message.class, 1L));
+//		return messageList;
+		
+		Query query = session.createQuery("from Message");
+		messageList = query.list();
+		LOGGER.info("------------- logging the message list ----------");
+		
+		messageList.stream()
+				   .forEach(message -> LOGGER.info("message {} : {}", message.getId(), message));
+		
 		return messageList;
 		
 		}catch(Exception e) {
@@ -59,6 +69,32 @@ public class MessageService {
 			session.close();
 		}
 
+		
+	}
+
+	public Message getMessage(long id) {
+		
+		session = DatabaseService.getSession();
+		session.beginTransaction();
+		Message message = (Message) session.get(Message.class, id);
+		session.getTransaction().commit();
+		session.close();
+		return message;
+		
+		
+		
+	}
+
+	public Message updateMessage(Message message) {
+		
+		session = DatabaseService.getSession();
+		session.beginTransaction();
+
+		session.update(message);
+		session.getTransaction().commit();
+		session.close();
+		return message;
+		
 		
 	}
 

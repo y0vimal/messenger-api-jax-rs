@@ -1,4 +1,4 @@
-package org.vimal.development.messenger_rest_api.hibernate.service;
+package org.vimal.development.messenger_rest_api.service;
 
 import java.util.Date;
 
