@@ -90,4 +90,13 @@ public class MessageResource {
 	public void deleteMessage(@PathParam ("messageId") Long messageId) {
 		messageService.deleteMessage(messageId);
 	}
+	
+	// end points for comments /messages/{messageId}/comments/ {commentId}
+	
+	@Path ("/{messageId}/comments")
+	@GET
+	public CommentResource getComments() {
+		return new CommentResource();
+	}
+	
 }

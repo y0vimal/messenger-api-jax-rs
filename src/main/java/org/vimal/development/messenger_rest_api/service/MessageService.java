@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.vimal.development.messenger_rest_api.model.Message;
 import org.vimal.development.messenger_rest_api.model.Profile;
+
+import com.google.gson.Gson;
 
 
 public class MessageService {
@@ -33,7 +36,7 @@ public class MessageService {
 		Query query = session.createQuery("from Message");
 		messageList = query.list();
 		
-		LOGGER.info("------------- logging the message list ----------");
+		LOGGER.info("------------- logging the message list ----------" + new Gson().toJson(messageList));
 		
 		return messageList.stream()
 				   .filter(message -> {
@@ -47,14 +50,14 @@ public class MessageService {
 						   return year == localDate.getYear();
 					   }
 				   })
-				   .collect(Collectors.toList())
-				   .subList(start, end);
+				   .collect(Collectors.toList());
+//				   .subList(start, end);
 		
 		
 		
 		}catch(Exception e) {
 			LOGGER.warn("exception caught: {} " , e.toString());
-			return messageList;
+			return null;
 			
 		}finally {
 			session.close();
@@ -72,6 +75,10 @@ public class MessageService {
 		session = DatabaseService.getSession();
 		session.beginTransaction();
 		session.save(message);
+		// saving comment entity
+//		message.getComments()
+//			   .forEach(comment -> session.save(comment));
+		
 		
 		session.getTransaction().commit();
 		
@@ -110,7 +117,8 @@ public class MessageService {
 		if(msg == null) {
 			return null;
 		}
-		session.update(message);
+		
+		session.merge(message);
 		session.getTransaction().commit();
 		session.close();
 		return message;

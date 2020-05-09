@@ -1,9 +1,15 @@
 package org.vimal.development.messenger_rest_api.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 public class Message{
@@ -21,6 +27,16 @@ public class Message{
 	private String created;
 	private String content;
 	
+	@OneToMany (cascade = CascadeType.ALL)
+	private Collection<Comment> comments = new ArrayList<Comment> ();
+	
+	@XmlTransient
+	public Collection<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(Collection<Comment> comments) {
+		this.comments = comments;
+	}
 	public Long getId() {
 		return id;
 	}
