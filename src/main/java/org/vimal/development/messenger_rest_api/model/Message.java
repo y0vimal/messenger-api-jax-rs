@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 public class Message{
 	
@@ -28,9 +31,10 @@ public class Message{
 	private String content;
 	
 	@OneToMany (cascade = CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
 	private Collection<Comment> comments = new ArrayList<Comment> ();
 	
-	@XmlTransient
+	
 	public Collection<Comment> getComments() {
 		return comments;
 	}

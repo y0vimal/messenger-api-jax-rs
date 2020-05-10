@@ -94,8 +94,8 @@ public class MessageResource {
 	// end points for comments /messages/{messageId}/comments/ {commentId}
 	
 	@Path ("/{messageId}/comments")
-	@GET
 	public CommentResource getComments() {
+		//return "hello";
 		return new CommentResource();
 	}
 	
